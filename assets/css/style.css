@@ -952,3 +952,23 @@ h2 { font-size:30px; line-height:1.12; }
 .nav-enhanced.menu-open .nav-cta { display:flex; width:100%; min-height:46px; justify-content:center; margin-top:8px; }
 }
 @media(prefers-reduced-motion:reduce) { .nav-toggle span { transition:none; } }
+@media(max-width:600px) {
+.flight-ready .flight-layout {
+display:flex; flex-direction:column; gap:28px;
+height:auto; min-height:0;
+}
+.flight-ready .flight-stage { order:0; width:100%; height:min(100dvh - 190px,720px); min-height:360px; flex-shrink:0; }
+.flight-ready .flight-facts { order:1; width:100%; max-height:none; overflow:visible; align-self:stretch; }
+.flight-facts h2 { font-size:28px; margin-bottom:18px; }
+.flight-tabs { gap:10px; margin-bottom:18px; }
+.flight-tabs button { padding:12px 22px; font-size:14px; min-height:44px; }
+.flight-rooms > div { padding:14px 0; gap:18px; }
+.flight-rooms dt,.flight-rooms dd { font-size:15px; }
+.flight-area-note { font-size:12px; }
+.flight-contact { min-height:48px; width:100%; padding:14px 20px; font-size:14px; justify-content:center; }
+.flight-ready .flight-floor-arrow { top:50%; bottom:auto; transform:translateY(-50%); width:40px; height:40px; }
+.flight-ready .flight-details { margin-top:38px; padding-top:32px; }
+.flight-measure .flight-layout { display:flex; flex-direction:column; gap:28px; height:auto; }
+.flight-measure .flight-stage { order:0; width:100%; height:min(100dvh - 190px,720px); min-height:360px; flex-shrink:0; }
+.flight-measure .flight-facts { order:1; width:100%; }
+}
