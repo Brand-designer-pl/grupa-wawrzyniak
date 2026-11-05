@@ -61,7 +61,7 @@ const blocked=[...host.children].filter(e=>e!==root).concat([...document.querySe
 blocked.forEach(e=>e.inert=true);
 document.body.classList.add('flight-mode','flight-preparing');
 const nav=document.querySelector('.site-nav');
-function fit(){document.documentElement.style.setProperty('--flight-nav',Math.ceil(nav.getBoundingClientRect().bottom)+'px');if(root.classList.contains('flight-preparing'))alignStart();}
+function fit(){if(document.body.classList.contains('mobile-menu-open'))return;document.documentElement.style.setProperty('--flight-nav',Math.ceil(nav.getBoundingClientRect().bottom)+'px');if(root.classList.contains('flight-preparing'))alignStart();}
 fit();
 function alignStart(){
 if((!motionEnabled&&!returning)||!sourceImage)return;

@@ -8,12 +8,22 @@ mobileNav.classList.add('nav-enhanced');
 menuToggle.hidden = false;
 function setMenu(open) {
 mobileNav.classList.toggle('menu-open', open);
+document.body.classList.toggle('mobile-menu-open', open);
+if (open) mobileNav.querySelector('.nav-links a')?.focus({preventScroll:true});
 menuToggle.setAttribute('aria-expanded', String(open));
 menuToggle.setAttribute('aria-label', open ? 'Zamknij menu' : 'Otwórz menu');
 window.dispatchEvent(new Event('resize'));
 }
 menuToggle.addEventListener('click', function () { setMenu(menuToggle.getAttribute('aria-expanded') !== 'true'); });
 mobileNav.querySelectorAll('a').forEach(function (link) { link.addEventListener('click', function () { setMenu(false); }); });
+document.addEventListener('keydown', function (event) {
+if (event.key === 'Tab' && mobileNav.classList.contains('menu-open')) {
+var controls = [menuToggle].concat(Array.from(mobileNav.querySelectorAll('.nav-links a,.nav-cta')));
+var first = controls[0], last = controls[controls.length-1];
+if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+}
+});
 document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && mobileNav.classList.contains('menu-open')) { setMenu(false); menuToggle.focus(); } });
 document.addEventListener('click', function (event) { if (!mobileNav.contains(event.target)) setMenu(false); });
 mobileMenuQuery.addEventListener('change', function () { setMenu(false); });
@@ -100,7 +110,7 @@ var c=config.video.sourceCrop;config.video.sourceCrop=[1-c[0]-c[2],c[1],c[2],c[3
 c=config.video.posterCrop;config.video.posterCrop=[config.video.width-c[0]-c[2],c[1],c[2],c[3]];
 c=config.video.floorCrop;config.video.floorCrop=[1-c[0]-c[2],c[1],c[2],c[3]];
 }
-import("/grupa-wawrzyniak/assets/js/unit-flight.js?v=gallery-lightbox-5nov").then(function(module){
+import("/grupa-wawrzyniak/assets/js/unit-flight.js?v=frosted-menu-5nov").then(function(module){
 return module.openUnitFlight(config,{animate:animate,origin:origin});
 }).catch(function(){investmentDetails.open=true;window.location.hash='rzuty';})
 .finally(function(){flightOpening=false;});
