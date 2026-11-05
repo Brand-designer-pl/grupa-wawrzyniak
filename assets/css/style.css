@@ -896,3 +896,44 @@ transition:opacity .3s ease,transform .4s cubic-bezier(.22,1,.36,1),visibility 0
 .contact-form input:focus,.contact-form textarea:focus { border-color:#777; box-shadow:0 0 0 3px rgba(0,0,0,.05); }
 }
 .flight-video-playing:not(.flight-ready) .flight-video { will-change:transform; backface-visibility:hidden; }
+@media(max-width:600px) {
+.wrap { padding:0 20px; }
+.site-nav { grid-template-columns:1fr; grid-template-areas:"brand" "links"; gap:6px; padding:14px 0 8px; }
+.site-nav .brand-logo { width:140px; }
+.site-nav .nav-links { justify-content:center; gap:26px; }
+.site-nav .nav-links a { display:flex; align-items:center; min-height:40px; font-size:13px; }
+.site-nav .nav-cta { display:none; }
+.hero { padding:18px 0 12px; }
+.hero-frame { position:relative; border-radius:22px; }
+.hero-image-wrap { height:360px; }
+.hero-image { height:100%; object-fit:cover; object-position:center; }
+.hero-notch { position:absolute; left:14px; right:14px; bottom:16px; padding:0; background:transparent; }
+.hero-notch .btn { min-height:48px; width:100%; justify-content:center; gap:24px; background:#fff; color:#151515; border-color:#fff; font-size:14px; }
+.section { padding:38px 0; }
+.split { gap:18px; }
+h1 { font-size:clamp(34px,10vw,44px); line-height:1.08; }
+h2 { font-size:30px; line-height:1.12; }
+.copy { font-size:16px; line-height:1.65; }
+.eyebrow { font-size:10px; letter-spacing:.12em; }
+#o-nas h2 { margin-bottom:0; font-size:30px; }
+#o-nas .copy { margin:0 0 14px; }
+.feature { border-radius:22px; }
+.feature img { height:240px; min-height:0; }
+.feature-copy { padding:24px; }
+.feature-copy h3 { font-size:28px; line-height:1.15; }
+.feature-copy .btn { width:100%; min-height:46px; justify-content:center; }
+.investment-list + .cta { margin-top:38px; }
+.cta { padding:26px 22px; border-radius:22px; }
+.cta h2 { font-size:28px; }
+.cta .btn { width:100%; justify-content:center; min-height:46px; }
+.site-footer { gap:18px; padding:34px 0; }
+.site-footer .brand-logo { width:140px; }
+.contact-form input,.contact-form textarea { font-size:16px; }
+.investment-choice { padding-top:26px; }
+.flight-toolbar > span { display:none; }
+}
+@media(max-width:360px) {
+.wrap { padding:0 16px; }
+.hero-image-wrap { height:320px; }
+.site-nav .nav-links { gap:24px; }
+}
