@@ -27,7 +27,7 @@ if(config.gallery?.length){
 const title=document.createElement('h2');title.textContent='Galeria';extra.append(title);
 const note=document.createElement('p');note.textContent='Realizacja referencyjna — ten sam projekt w innej lokalizacji';extra.append(note);
 const gallery=document.createElement('div');gallery.className='flight-gallery';
-for(const item of config.gallery){const link=document.createElement('a'),image=document.createElement('img');link.href=item.src;link.target='_blank';link.rel='noopener';image.src=item.thumb;image.alt=item.alt;image.loading='lazy';link.append(image);gallery.append(link);}extra.append(gallery);
+for(const item of config.gallery){const link=document.createElement('a'),image=document.createElement('img');link.href=item.src;link.dataset.galleryPhoto='';link.dataset.galleryTitle='Galeria';image.src=item.thumb;image.alt=item.alt;image.loading='lazy';link.append(image);gallery.append(link);}extra.append(gallery);
 }
 root.append(extra);
 const more=document.createElement('button');more.type='button';more.className='flight-more';more.textContent='Szczegóły lokalu ↓';more.addEventListener('click',()=>root.scrollTo({top:extra.offsetTop-35,behavior:reduced.matches?'instant':'smooth'}));root.querySelector('.flight-facts').append(more);
@@ -189,7 +189,7 @@ startSync();armWatchdog();
 }
 function close(restore=true){if(closed)return;closed=true;controller.abort();clearTimeout(playbackTimer);video.pause();stopSync();motionAnimations.forEach(a=>a.cancel());settleAnimation?.cancel();video.removeAttribute('src');video.load();blocked.forEach(e=>e.inert=false);document.body.classList.remove('flight-mode','flight-preparing','flight-returning');document.body.style.removeProperty('--return-reveal');root.remove();active=null;if(restore){if(pushed)history.back();else{const backURL=new URL(oldHref);backURL.searchParams.delete('lokal');backURL.hash='';history.replaceState(null,'',backURL.pathname+backURL.search);}}window.scrollTo({top:oldScroll,behavior:'instant'});if(origin?.isConnected)origin.focus({preventScroll:true});window.removeEventListener('resize',fit);document.removeEventListener('visibilitychange',visibility);document.removeEventListener('keydown',key);window.removeEventListener('popstate',pop);window.removeEventListener('pagehide',leaving);reduced.removeEventListener('change',preference);}
 async function whenVisible(){if(document.hidden)await new Promise(resolve=>{const done=()=>{if(!document.hidden||controller.signal.aborted){document.removeEventListener('visibilitychange',done);controller.signal.removeEventListener('abort',done);resolve();}};document.addEventListener('visibilitychange',done);controller.signal.addEventListener('abort',done,{once:true});});}
-function key(e){if(e.key==='Escape'){e.preventDefault();if(returning)close(returnRestore);else reverseClose();}}
+function key(e){if(document.querySelector('.photo-viewer[open]'))return;if(e.key==='Escape'){e.preventDefault();if(returning)close(returnRestore);else reverseClose();}}
 function pop(){if(returning)close(false);else reverseClose(false);}
 function leaving(){close(false);}
 function preference(){if(reduced.matches){settleAnimation?.cancel();if(returning)close(returnRestore);else finish();}}

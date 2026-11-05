@@ -100,7 +100,7 @@ var c=config.video.sourceCrop;config.video.sourceCrop=[1-c[0]-c[2],c[1],c[2],c[3
 c=config.video.posterCrop;config.video.posterCrop=[config.video.width-c[0]-c[2],c[1],c[2],c[3]];
 c=config.video.floorCrop;config.video.floorCrop=[1-c[0]-c[2],c[1],c[2],c[3]];
 }
-import("/grupa-wawrzyniak/assets/js/unit-flight.js?v=native-speed-5nov").then(function(module){
+import("/grupa-wawrzyniak/assets/js/unit-flight.js?v=gallery-lightbox-5nov").then(function(module){
 return module.openUnitFlight(config,{animate:animate,origin:origin});
 }).catch(function(){investmentDetails.open=true;window.location.hash='rzuty';})
 .finally(function(){flightOpening=false;});
@@ -292,7 +292,7 @@ heroArt.addEventListener('load', measureParallax, { once:true });
 measureParallax();
 }
 var photos = Array.from(document.querySelectorAll("[data-gallery-photo]"));
-if (photos.length && typeof HTMLDialogElement !== "undefined") {
+if (typeof HTMLDialogElement !== "undefined" && (photos.length || flightConfigEl)) {
 var viewer = document.createElement("dialog");
 viewer.className = "photo-viewer";
 viewer.setAttribute("aria-label", "Galeria zdjęć");
@@ -303,7 +303,10 @@ var photoOrigin;
 var fullImage = viewer.querySelector(".viewer-image");
 var photoCaption = viewer.querySelector("#viewer-caption");
 var thumbs = viewer.querySelector(".viewer-thumbs");
-var thumbButtons = photos.map(function (link, i) {
+var thumbButtons = [];
+function buildThumbs() {
+thumbs.replaceChildren();
+thumbButtons = photos.map(function (link, i) {
 var button = document.createElement("button");
 button.type = "button";
 button.setAttribute("aria-label", "Pokaż zdjęcie " + (i + 1));
@@ -316,6 +319,7 @@ button.addEventListener("click", function () { showPhoto(i); });
 thumbs.appendChild(button);
 return button;
 });
+}
 function showPhoto(i) {
 currentPhoto = (i + photos.length) % photos.length;
 var link = photos[currentPhoto];
@@ -327,15 +331,17 @@ button.setAttribute("aria-current", index === currentPhoto ? "true" : "false");
 });
 thumbButtons[currentPhoto].scrollIntoView({block: "nearest", inline: "nearest"});
 }
-photos.forEach(function (link, i) {
-link.addEventListener("click", function (event) {
-if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+document.addEventListener("click", function (event) {
+var link = event.target.closest && event.target.closest('[data-gallery-photo]');
+if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button > 0) return;
 event.preventDefault();
+var group = link.closest('.flight-gallery, .gallery-group') || document;
+photos = Array.from(group.querySelectorAll('[data-gallery-photo]'));
+buildThumbs();
 photoOrigin = link;
 viewer.showModal();
-document.body.classList.add("gallery-open");
-showPhoto(i);
-});
+document.body.classList.add('gallery-open');
+showPhoto(photos.indexOf(link));
 });
 viewer.querySelector(".viewer-close").addEventListener("click", function () { viewer.close(); });
 viewer.querySelector(".viewer-prev").addEventListener("click", function () { showPhoto(currentPhoto - 1); });
