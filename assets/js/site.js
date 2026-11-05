@@ -28,6 +28,50 @@ document.addEventListener('keydown', function (event) { if (event.key === 'Escap
 document.addEventListener('click', function (event) { if (!mobileNav.contains(event.target)) setMenu(false); });
 mobileMenuQuery.addEventListener('change', function () { setMenu(false); });
 }
+var introLogo = document.querySelector('.site-nav .brand-logo');
+var introReduced = matchMedia('(prefers-reduced-motion: reduce)');
+var introSeen = false;
+try { introSeen = sessionStorage.getItem('gw-brand-intro') === '1'; } catch (_) { introSeen = true; }
+if (introLogo && !introSeen && !introReduced.matches && !location.search && !location.hash) {
+try { sessionStorage.setItem('gw-brand-intro', '1'); } catch (_) {}
+var introCover = document.createElement('div');
+introCover.className = 'brand-intro'; introCover.setAttribute('aria-hidden', 'true');
+var flyingLogo = introLogo.cloneNode(false); flyingLogo.alt = ''; flyingLogo.className = 'brand-intro-logo';
+introCover.append(flyingLogo); document.body.append(introCover);
+var introAnimations = [], introTimer;
+function clearIntro() {
+clearTimeout(introTimer); introAnimations.forEach(function (a) { a.cancel(); });
+introLogo.style.visibility = ''; introCover.remove();
+window.removeEventListener('resize', clearIntro); window.removeEventListener('pagehide', clearIntro);
+document.removeEventListener('visibilitychange', introVisibility);
+document.removeEventListener('pointerdown', clearIntro); document.removeEventListener('keydown', clearIntro);
+introReduced.removeEventListener('change', clearIntro);
+}
+function introVisibility() { if (document.hidden) clearIntro(); }
+async function playBrandIntro() {
+try {
+await introLogo.decode();
+if (!introCover.isConnected || document.hidden) { clearIntro(); return; }
+var rect = introLogo.getBoundingClientRect();
+var width = Math.min(280, innerWidth * .62);
+var height = width * introLogo.naturalHeight / introLogo.naturalWidth;
+var left = (innerWidth - width) / 2, top = (innerHeight - height) / 2;
+Object.assign(flyingLogo.style, { width:width+'px',height:height+'px',left:left+'px',top:top+'px' });
+introLogo.style.visibility = 'hidden';
+var entrance = flyingLogo.animate([{opacity:0,transform:'translateY(12px) scale(.96)',filter:'blur(4px)'},{opacity:1,transform:'none',filter:'blur(0px)'}],{duration:450,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});
+introAnimations.push(entrance); await entrance.finished;
+var flight = flyingLogo.animate([{transform:'translate(0,0) scale(1)'},{transform:'translate('+(rect.left-left)+'px,'+(rect.top-top)+'px) scale('+(rect.width/width)+')'}],{duration:850,delay:120,easing:'cubic-bezier(.65,0,.2,1)',fill:'forwards'});
+var reveal = introCover.animate([{backgroundColor:'#fff'},{backgroundColor:'rgba(255,255,255,0)'}],{duration:700,delay:270,fill:'forwards',easing:'ease'});
+introAnimations.push(flight,reveal); await flight.finished; clearIntro();
+} catch (_) { clearIntro(); }
+}
+window.addEventListener('resize', clearIntro); window.addEventListener('pagehide', clearIntro);
+document.addEventListener('visibilitychange', introVisibility);
+document.addEventListener('pointerdown', clearIntro); document.addEventListener('keydown', clearIntro);
+introReduced.addEventListener('change', clearIntro);
+introTimer = setTimeout(clearIntro, 2500);
+playBrandIntro();
+}
 document.querySelectorAll("[data-unit-selector]").forEach(function (root) {
 var panel = root.querySelector("[data-unit-panel]");
 var shapes = Array.prototype.slice.call(root.querySelectorAll(".unit-shape"));
