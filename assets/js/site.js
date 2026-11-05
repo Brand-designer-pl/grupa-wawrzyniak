@@ -31,12 +31,12 @@ mobileMenuQuery.addEventListener('change', function () { setMenu(false); });
 var introLogo = document.querySelector('.site-nav .brand-logo');
 var introReduced = matchMedia('(prefers-reduced-motion: reduce)');
 var introSeen = false;
-try { introSeen = sessionStorage.getItem('gw-brand-intro') === '1'; } catch (_) { introSeen = true; }
+try { introSeen = sessionStorage.getItem('gw-brand-intro-written-v2') === '1'; } catch (_) { introSeen = true; }
 if (introLogo && !introSeen && !introReduced.matches && !location.search && !location.hash) {
-try { sessionStorage.setItem('gw-brand-intro', '1'); } catch (_) {}
+try { sessionStorage.setItem('gw-brand-intro-written-v2', '1'); } catch (_) {}
 var introCover = document.createElement('div');
 introCover.className = 'brand-intro'; introCover.setAttribute('aria-hidden', 'true');
-var flyingLogo = introLogo.cloneNode(false); flyingLogo.alt = ''; flyingLogo.className = 'brand-intro-logo';
+var flyingLogo = document.createElement('div'); flyingLogo.className = 'brand-intro-logo';
 introCover.append(flyingLogo); document.body.append(introCover);
 var introAnimations = [], introTimer;
 function clearIntro() {
@@ -50,6 +50,13 @@ introReduced.removeEventListener('change', clearIntro);
 function introVisibility() { if (document.hidden) clearIntro(); }
 async function playBrandIntro() {
 try {
+var logoResponse = await fetch(introLogo.currentSrc || introLogo.src);
+if (!logoResponse.ok) throw Error('Logo unavailable');
+var logoDoc = new DOMParser().parseFromString(await logoResponse.text(), 'image/svg+xml');
+var vector = document.importNode(logoDoc.documentElement, true);
+if (vector.tagName.toLowerCase() !== 'svg') throw Error('Invalid logo');
+vector.removeAttribute('id'); vector.setAttribute('width', '100%'); vector.setAttribute('height', '100%');
+flyingLogo.append(vector);
 await introLogo.decode();
 if (!introCover.isConnected || document.hidden) { clearIntro(); return; }
 var rect = introLogo.getBoundingClientRect();
@@ -58,8 +65,25 @@ var height = width * introLogo.naturalHeight / introLogo.naturalWidth;
 var left = (innerWidth - width) / 2, top = (innerHeight - height) / 2;
 Object.assign(flyingLogo.style, { width:width+'px',height:height+'px',left:left+'px',top:top+'px' });
 introLogo.style.visibility = 'hidden';
-var entrance = flyingLogo.animate([{opacity:0,transform:'translateY(12px) scale(.96)',filter:'blur(4px)'},{opacity:1,transform:'none',filter:'blur(0px)'}],{duration:450,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});
-introAnimations.push(entrance); await entrance.finished;
+flyingLogo.style.opacity = '1';
+var groups = vector.querySelectorAll('svg > g');
+var strapline = groups[0], letters = Array.from(groups[1].children);
+strapline.style.opacity = '0';
+var writing = letters.map(function (letter, index) {
+var length = letter.getTotalLength();
+letter.style.stroke = '#010101'; letter.style.strokeWidth = '.35';
+letter.style.strokeDasharray = length; letter.style.strokeDashoffset = length;
+var trace = letter.animate([
+{strokeDashoffset:length, fillOpacity:0, opacity:0},
+{strokeDashoffset:0, fillOpacity:.12, opacity:1, offset:.6},
+{strokeDashoffset:0, fillOpacity:1, opacity:1}
+], {duration:520,delay:index*85,easing:'ease-in-out',fill:'both'});
+introAnimations.push(trace); return trace.finished;
+});
+await Promise.all(writing);
+letters.forEach(function (letter) { letter.style.stroke = 'none'; });
+var groupReveal = strapline.animate([{opacity:0,transform:'translateY(3px)',filter:'blur(2px)'},{opacity:1,transform:'none',filter:'blur(0px)'}],{duration:380,delay:70,easing:'ease-out',fill:'forwards'});
+introAnimations.push(groupReveal); await groupReveal.finished;
 var flight = flyingLogo.animate([{transform:'translate(0,0) scale(1)'},{transform:'translate('+(rect.left-left)+'px,'+(rect.top-top)+'px) scale('+(rect.width/width)+')'}],{duration:850,delay:120,easing:'cubic-bezier(.65,0,.2,1)',fill:'forwards'});
 var reveal = introCover.animate([{backgroundColor:'#fff'},{backgroundColor:'rgba(255,255,255,0)'}],{duration:700,delay:270,fill:'forwards',easing:'ease'});
 introAnimations.push(flight,reveal); await flight.finished; clearIntro();
@@ -69,7 +93,7 @@ window.addEventListener('resize', clearIntro); window.addEventListener('pagehide
 document.addEventListener('visibilitychange', introVisibility);
 document.addEventListener('pointerdown', clearIntro); document.addEventListener('keydown', clearIntro);
 introReduced.addEventListener('change', clearIntro);
-introTimer = setTimeout(clearIntro, 2500);
+introTimer = setTimeout(clearIntro, 5500);
 playBrandIntro();
 }
 document.querySelectorAll("[data-unit-selector]").forEach(function (root) {
