@@ -937,3 +937,18 @@ h2 { font-size:30px; line-height:1.12; }
 .hero-image-wrap { height:320px; }
 .site-nav .nav-links { gap:24px; }
 }
+.nav-toggle { display:none; }
+@media(max-width:600px) {
+.site-nav.nav-enhanced { position:relative; grid-template-columns:1fr auto; grid-template-areas:"brand toggle"; min-height:76px; padding:12px 0; }
+.site-nav.nav-enhanced > .brand { justify-self:start; }
+.nav-enhanced .nav-toggle { grid-area:toggle; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; width:44px; height:44px; padding:10px; border:1px solid #e6e6e6; border-radius:50%; background:#fff; }
+.nav-toggle span { display:block; width:20px; height:1.5px; background:#151515; transition:transform .2s; }
+.menu-open .nav-toggle span:first-child { transform:translateY(3.75px) rotate(45deg); }
+.menu-open .nav-toggle span:last-child { transform:translateY(-3.75px) rotate(-45deg); }
+.nav-enhanced .nav-links,.nav-enhanced .nav-cta { display:none; }
+.site-nav.nav-enhanced.menu-open { grid-template-areas:"brand toggle" "links links" "cta cta"; padding-bottom:18px; }
+.nav-enhanced.menu-open .nav-links { display:flex; flex-direction:column; align-items:stretch; gap:0; padding:14px 0 4px; width:100%; }
+.nav-enhanced.menu-open .nav-links a { padding:12px 4px; min-height:48px; font-size:18px; border-bottom:1px solid #eee; }
+.nav-enhanced.menu-open .nav-cta { display:flex; width:100%; min-height:46px; justify-content:center; margin-top:8px; }
+}
+@media(prefers-reduced-motion:reduce) { .nav-toggle span { transition:none; } }

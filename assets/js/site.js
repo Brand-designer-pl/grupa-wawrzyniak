@@ -1,5 +1,23 @@
 (function () {
 "use strict";
+var mobileNav = document.querySelector('.site-nav');
+var menuToggle = document.querySelector('.nav-toggle');
+if (mobileNav && menuToggle) {
+var mobileMenuQuery = matchMedia('(max-width:600px)');
+mobileNav.classList.add('nav-enhanced');
+menuToggle.hidden = false;
+function setMenu(open) {
+mobileNav.classList.toggle('menu-open', open);
+menuToggle.setAttribute('aria-expanded', String(open));
+menuToggle.setAttribute('aria-label', open ? 'Zamknij menu' : 'Otwórz menu');
+window.dispatchEvent(new Event('resize'));
+}
+menuToggle.addEventListener('click', function () { setMenu(menuToggle.getAttribute('aria-expanded') !== 'true'); });
+mobileNav.querySelectorAll('a').forEach(function (link) { link.addEventListener('click', function () { setMenu(false); }); });
+document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && mobileNav.classList.contains('menu-open')) { setMenu(false); menuToggle.focus(); } });
+document.addEventListener('click', function (event) { if (!mobileNav.contains(event.target)) setMenu(false); });
+mobileMenuQuery.addEventListener('change', function () { setMenu(false); });
+}
 document.querySelectorAll("[data-unit-selector]").forEach(function (root) {
 var panel = root.querySelector("[data-unit-panel]");
 var shapes = Array.prototype.slice.call(root.querySelectorAll(".unit-shape"));
