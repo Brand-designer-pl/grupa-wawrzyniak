@@ -178,7 +178,7 @@ var c=config.video.sourceCrop;config.video.sourceCrop=[1-c[0]-c[2],c[1],c[2],c[3
 c=config.video.posterCrop;config.video.posterCrop=[config.video.width-c[0]-c[2],c[1],c[2],c[3]];
 c=config.video.floorCrop;config.video.floorCrop=[1-c[0]-c[2],c[1],c[2],c[3]];
 }
-import("/grupa-wawrzyniak/assets/js/unit-flight.js?v=frosted-menu-5nov").then(function(module){
+import("/grupa-wawrzyniak/assets/js/unit-flight.js?v=svg-icons-6nov").then(function(module){
 return module.openUnitFlight(config,{animate:animate,origin:origin});
 }).catch(function(){investmentDetails.open=true;window.location.hash='rzuty';})
 .finally(function(){flightOpening=false;});
@@ -249,7 +249,7 @@ var button = document.createElement("button");
 var next = (index + direction + panels.length) % panels.length;
 button.type = "button";
 button.className = "floor-arrow " + (direction < 0 ? "floor-prev" : "floor-next");
-button.textContent = direction < 0 ? "←" : "→";
+button.innerHTML = direction < 0 ? '<span class="ui-icon icon-arrow-left" aria-hidden="true"></span>' : '<span class="ui-icon icon-arrow-right" aria-hidden="true"></span>';
 button.setAttribute("aria-label", (direction < 0 ? "Poprzednia kondygnacja: " : "Następna kondygnacja: ") + tabs[next].textContent);
 button.setAttribute("aria-controls", panels[next].id);
 button.addEventListener("click", function () {
@@ -374,7 +374,7 @@ if (typeof HTMLDialogElement !== "undefined" && (photos.length || flightConfigEl
 var viewer = document.createElement("dialog");
 viewer.className = "photo-viewer";
 viewer.setAttribute("aria-label", "Galeria zdjęć");
-viewer.innerHTML = '<div class="viewer-toolbar"><p id="viewer-caption" aria-live="polite"></p><button type="button" class="viewer-close" aria-label="Zamknij galerię">×</button></div><div class="viewer-stage"><button type="button" class="viewer-prev" aria-label="Poprzednie zdjęcie">←</button><img class="viewer-image" alt=""><button type="button" class="viewer-next" aria-label="Następne zdjęcie">→</button></div><div class="viewer-thumbs" aria-label="Miniatury zdjęć"></div>';
+viewer.innerHTML = '<div class="viewer-toolbar"><p id="viewer-caption" aria-live="polite"></p><button type="button" class="viewer-close" aria-label="Zamknij galerię"><span class="ui-icon icon-close" aria-hidden="true"></span></button></div><div class="viewer-stage"><button type="button" class="viewer-prev" aria-label="Poprzednie zdjęcie"><span class="ui-icon icon-arrow-left" aria-hidden="true"></span></button><img class="viewer-image" alt=""><button type="button" class="viewer-next" aria-label="Następne zdjęcie"><span class="ui-icon icon-arrow-right" aria-hidden="true"></span></button></div><div class="viewer-thumbs" aria-label="Miniatury zdjęć"></div>';
 document.body.appendChild(viewer);
 var currentPhoto = 0;
 var photoOrigin;

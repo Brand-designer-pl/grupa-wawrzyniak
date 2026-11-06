@@ -1003,3 +1003,12 @@ body.mobile-menu-open .flight-toolbar { visibility:hidden; }
 .wrap,.flight-screen { padding-left:24px; padding-right:24px; }
 .flight-toolbar { left:24px; right:24px; }
 }
+.ui-icon { display:inline-block; width:20px; height:20px; flex:0 0 20px; vertical-align:middle; background:currentColor; -webkit-mask:var(--icon) center/contain no-repeat; mask:var(--icon) center/contain no-repeat; }
+.icon-arrow-ne { --icon:url("/grupa-wawrzyniak/assets/icons/arrow-ne.svg"); }
+.icon-arrow-left { --icon:url("/grupa-wawrzyniak/assets/icons/arrow-left.svg"); }
+.icon-arrow-right { --icon:url("/grupa-wawrzyniak/assets/icons/arrow-right.svg"); }
+.icon-arrow-down { --icon:url("/grupa-wawrzyniak/assets/icons/arrow-down.svg"); }
+.icon-close { --icon:url("/grupa-wawrzyniak/assets/icons/close.svg"); }
+.flight-back,.flight-more { display:inline-flex; align-items:center; gap:10px; }
+.flight-floor-arrow,.photo-viewer .viewer-close,.photo-viewer .viewer-prev,.photo-viewer .viewer-next,.gallery-zoom { align-items:center; justify-content:center; }
+.flight-ready .flight-floor-arrow,.photo-viewer .viewer-close,.photo-viewer .viewer-prev,.photo-viewer .viewer-next,.gallery-zoom { display:inline-flex; }
