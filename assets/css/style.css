@@ -1022,3 +1022,5 @@ a[x-apple-data-detectors] { color:inherit!important; text-decoration:inherit!imp
 @media(max-width:600px) {
 .hero-notch a.btn:any-link { color:#151515; }
 }
+button { color:inherit; }
+a,button { -webkit-text-fill-color:currentColor; }
