@@ -994,3 +994,12 @@ body.mobile-menu-open .flight-toolbar { visibility:hidden; }
 .brand-intro { position:fixed; inset:0; z-index:4000; background:#fff; pointer-events:none; }
 .brand-intro-logo { position:absolute; display:block; object-fit:contain; transform-origin:top left; opacity:0; }
 @media(prefers-reduced-motion:reduce) { .brand-intro { display:none; } }
+@media(max-width:600px) {
+.wrap { padding-left:28px; padding-right:28px; }
+.flight-screen { padding-left:28px; padding-right:28px; }
+.flight-toolbar { left:28px; right:28px; }
+}
+@media(max-width:360px) {
+.wrap,.flight-screen { padding-left:24px; padding-right:24px; }
+.flight-toolbar { left:24px; right:24px; }
+}
