@@ -1012,3 +1012,13 @@ body.mobile-menu-open .flight-toolbar { visibility:hidden; }
 .flight-back,.flight-more { display:inline-flex; align-items:center; gap:10px; }
 .flight-floor-arrow,.photo-viewer .viewer-close,.photo-viewer .viewer-prev,.photo-viewer .viewer-next,.gallery-zoom { align-items:center; justify-content:center; }
 .flight-ready .flight-floor-arrow,.photo-viewer .viewer-close,.photo-viewer .viewer-prev,.photo-viewer .viewer-next,.gallery-zoom { display:inline-flex; }
+a:any-link { color:inherit; -webkit-tap-highlight-color:rgba(0,0,0,.08); }
+a.btn:any-link { color:#fff; }
+a.btn.light:any-link { color:var(--ink); }
+.cta a.btn:any-link { color:var(--ink); }
+.selector-unit.is-active a:any-link { color:#fff; }
+.photo-viewer a:any-link { color:#fff; }
+a[x-apple-data-detectors] { color:inherit!important; text-decoration:inherit!important; font:inherit!important; }
+@media(max-width:600px) {
+.hero-notch a.btn:any-link { color:#151515; }
+}
