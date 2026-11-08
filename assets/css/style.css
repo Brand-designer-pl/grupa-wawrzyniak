@@ -11,6 +11,7 @@
 --radius-md: 22px;
 --radius-sm: 14px;
 --max: 1440px;
+--gutter: 80px;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -46,11 +47,11 @@ z-index: 100;
 left: 0;
 }
 .shell {
-max-width: var(--max);
+max-width: calc(var(--max) + 2 * var(--gutter));
 margin: 0 auto;
 background: var(--paper);
 }
-.wrap { padding: 0 5.5%; }
+.wrap { padding: 0 min(5.5%, var(--gutter)); }
 .site-nav {
 display: grid;
 grid-template-columns: auto 1fr auto;
