@@ -10,13 +10,13 @@
 --radius-lg: 28px;
 --radius-md: 22px;
 --radius-sm: 14px;
---max: 1360px;
+--max: 1440px;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
 margin: 0;
-background: var(--bg);
+background: var(--paper);
 color: var(--ink);
 font: 16px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
